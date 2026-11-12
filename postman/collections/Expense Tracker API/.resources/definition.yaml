@@ -1,0 +1,12 @@
+$kind: collection
+name: Expense Tracker API
+description: |-
+  API collection for the Expense Tracker Service at Northbeam Consulting.
+  Covers Categories, Expenses, and Claims with JWT Bearer auth.
+
+  Roles: Employee, Approver, Finance
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{token}}'

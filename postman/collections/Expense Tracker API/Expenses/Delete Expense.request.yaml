@@ -1,0 +1,16 @@
+$kind: http-request
+name: Delete Expense
+method: DELETE
+url: '{{base_url}}/expenses/:id'
+order: 5000
+pathVariables:
+  - key: id
+    value: '{{expense_id}}'
+examples: './.resources/Delete Expense.resources/examples'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 204", () => pm.response.to.have.status(204));
+      pm.test("Response body is empty", () => pm.expect(pm.response.text()).to.be.empty);
+      pm.test("Response time is under 2000ms", () => pm.expect(pm.response.responseTime).to.be.below(2000));

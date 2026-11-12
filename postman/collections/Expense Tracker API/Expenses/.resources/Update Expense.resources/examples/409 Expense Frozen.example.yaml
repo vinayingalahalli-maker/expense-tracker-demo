@@ -1,0 +1,27 @@
+$kind: http-example
+name: 409 Expense Frozen
+request:
+  url: '{{base_url}}/expenses/exp_001'
+  method: PUT
+  body:
+    type: json
+    content: |-
+      {
+        "amount": 55.00,
+        "currency": "USD",
+        "date": "2026-11-10",
+        "description": "Updated description"
+      }
+response:
+  statusCode: 409
+  statusText: Conflict
+  headers:
+    - key: Content-Type
+      value: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "error": "conflict",
+        "message": "Expense exp_001 is part of a submitted claim and cannot be modified"
+      }

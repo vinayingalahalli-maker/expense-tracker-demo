@@ -1,0 +1,958 @@
+openapi: 3.0.0
+info:
+  title: Expense Tracker Spec
+  version: 1.0.0
+  description: |-
+    API collection for the Expense Tracker Service at Northbeam Consulting.
+    Covers Categories, Expenses, and Claims with JWT Bearer auth.
+
+    Roles: Employee, Approver, Finance
+servers:
+  - url: '{{base_url}}'
+paths:
+  /categories:
+    get:
+      summary: List Categories
+      responses:
+        '200':
+          description: 200 OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    receipt_threshold:
+                      type: integer
+              example:
+                - id: cat_001
+                  name: Travel
+                  description: 'Flights, hotels, and ground transport'
+                  receipt_threshold: 50
+                - id: cat_002
+                  name: Meals
+                  description: Business meals and entertainment
+                  receipt_threshold: 25
+        '401':
+          description: 401 Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+              example:
+                error: unauthorized
+                message: A valid Bearer token is required
+      tags:
+        - Categories
+    post:
+      summary: Create Category
+      responses:
+        '201':
+          description: 201 Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  receipt_threshold:
+                    type: integer
+              example:
+                id: cat_001
+                name: Travel
+                description: 'Flights, hotels, and ground transport'
+                receipt_threshold: 50
+        '422':
+          description: 422 Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                        message:
+                          type: string
+              example:
+                error: validation_error
+                details:
+                  - field: name
+                    message: name is required
+                  - field: receipt_threshold
+                    message: receipt_threshold must be a positive number
+      tags:
+        - Categories
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                receipt_threshold:
+                  type: integer
+            example:
+              name: Travel
+              description: 'Flights, hotels, and ground transport'
+              receipt_threshold: 50
+  '/categories/{id}':
+    get:
+      summary: Get Category
+      responses:
+        '200':
+          description: 200 OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  receipt_threshold:
+                    type: integer
+              example:
+                id: cat_001
+                name: Travel
+                description: 'Flights, hotels, and ground transport'
+                receipt_threshold: 50
+        '404':
+          description: 404 Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+              example:
+                error: not_found
+                message: Category cat_999 does not exist
+      tags:
+        - Categories
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{category_id}}'
+    put:
+      summary: Update Category
+      responses:
+        '200':
+          description: 200 OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  receipt_threshold:
+                    type: integer
+              example:
+                id: cat_001
+                name: Travel
+                description: 'Flights, hotels, ground transport and car hire'
+                receipt_threshold: 75
+        '403':
+          description: 403 Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+              example:
+                error: forbidden
+                message: Only Finance role can manage categories
+      tags:
+        - Categories
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                receipt_threshold:
+                  type: integer
+            example:
+              name: Travel
+              description: 'Flights, hotels, ground transport and car hire'
+              receipt_threshold: 75
+  /expenses:
+    get:
+      summary: List Expenses
+      responses:
+        '200':
+          description: 200 OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    category_id:
+                      type: string
+                    amount:
+                      type: number
+                    currency:
+                      type: string
+                    date:
+                      type: string
+                      format: date
+                    description:
+                      type: string
+                    receipt_url:
+                      nullable: true
+                    status:
+                      type: string
+              example:
+                - id: exp_001
+                  category_id: cat_001
+                  amount: 42.5
+                  currency: USD
+                  date: '2026-11-10'
+                  description: Taxi to client site
+                  receipt_url: null
+                  status: unclaimed
+                - id: exp_002
+                  category_id: cat_002
+                  amount: 18
+                  currency: USD
+                  date: '2026-11-09'
+                  description: Team lunch
+                  receipt_url: null
+                  status: unclaimed
+        '401':
+          description: 401 Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+              example:
+                error: unauthorized
+                message: A valid Bearer token is required
+      tags:
+        - Expenses
+    post:
+      summary: Create Expense
+      responses:
+        '201':
+          description: 201 Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  category_id:
+                    type: string
+                  amount:
+                    type: number
+                  currency:
+                    type: string
+                  date:
+                    type: string
+                    format: date
+                  description:
+                    type: string
+                  receipt_url:
+                    nullable: true
+                  status:
+                    type: string
+              example:
+                id: exp_001
+                category_id: cat_001
+                amount: 42.5
+                currency: USD
+                date: '2026-11-10'
+                description: Taxi to client site
+                receipt_url: null
+                status: unclaimed
+        '422':
+          description: 422 Receipt Required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                        message:
+                          type: string
+              example:
+                error: validation_error
+                details:
+                  - field: receipt_url
+                    message: A receipt is required for amounts above the category threshold of 50.00
+      tags:
+        - Expenses
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category_id:
+                  type: string
+                amount:
+                  type: number
+                currency:
+                  type: string
+                date:
+                  type: string
+                  format: date
+                description:
+                  type: string
+                receipt_url:
+                  nullable: true
+            example:
+              category_id: '{{category_id}}'
+              amount: 42.5
+              currency: USD
+              date: '2026-11-10'
+              description: Taxi to client site
+              receipt_url: null
+  '/expenses/{id}':
+    get:
+      summary: Get Expense
+      responses:
+        '200':
+          description: 200 OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  category_id:
+                    type: string
+                  amount:
+                    type: number
+                  currency:
+                    type: string
+                  date:
+                    type: string
+                    format: date
+                  description:
+                    type: string
+                  receipt_url:
+                    nullable: true
+                  status:
+                    type: string
+              example:
+                id: exp_001
+                category_id: cat_001
+                amount: 42.5
+                currency: USD
+                date: '2026-11-10'
+                description: Taxi to client site
+                receipt_url: null
+                status: unclaimed
+        '404':
+          description: 404 Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+              example:
+                error: not_found
+                message: Expense exp_999 does not exist
+      tags:
+        - Expenses
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{expense_id}}'
+    put:
+      summary: Update Expense
+      responses:
+        '200':
+          description: 200 OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  category_id:
+                    type: string
+                  amount:
+                    type: integer
+                  currency:
+                    type: string
+                  date:
+                    type: string
+                    format: date
+                  description:
+                    type: string
+                  receipt_url:
+                    type: string
+                    format: uri
+                  status:
+                    type: string
+              example:
+                id: exp_001
+                category_id: cat_001
+                amount: 55
+                currency: USD
+                date: '2026-11-10'
+                description: Taxi to client site (updated fare)
+                receipt_url: 'https://receipts.example.com/r/abc123'
+                status: unclaimed
+        '409':
+          description: 409 Expense Frozen
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+              example:
+                error: conflict
+                message: Expense exp_001 is part of a submitted claim and cannot be modified
+      tags:
+        - Expenses
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: integer
+                currency:
+                  type: string
+                date:
+                  type: string
+                  format: date
+                description:
+                  type: string
+                receipt_url:
+                  type: string
+                  format: uri
+            example:
+              amount: 55
+              currency: USD
+              date: '2026-11-10'
+              description: Taxi to client site (updated fare)
+              receipt_url: 'https://receipts.example.com/r/abc123'
+    delete:
+      summary: Delete Expense
+      responses:
+        '204':
+          description: 204 No Content
+        '409':
+          description: 409 Expense In Claim
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+              example:
+                error: conflict
+                message: Expense exp_001 is part of a submitted claim and cannot be deleted
+      tags:
+        - Expenses
+  /claims:
+    get:
+      summary: List Claims
+      responses:
+        '200':
+          description: 200 OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    title:
+                      type: string
+                    status:
+                      type: string
+                    expense_ids:
+                      type: array
+                      items:
+                        type: string
+                    created_by:
+                      type: string
+              example:
+                - id: clm_001
+                  title: November Business Trip
+                  status: draft
+                  expense_ids:
+                    - exp_001
+                    - exp_002
+                  created_by: user_101
+                - id: clm_002
+                  title: October Conferences
+                  status: submitted
+                  expense_ids:
+                    - exp_003
+                  created_by: user_101
+        '401':
+          description: 401 Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+              example:
+                error: unauthorized
+                message: A valid Bearer token is required
+      tags:
+        - Claims
+    post:
+      summary: Create Claim
+      responses:
+        '201':
+          description: 201 Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: string
+                  expense_ids:
+                    type: array
+                    items:
+                      type: string
+                  created_by:
+                    type: string
+              example:
+                id: clm_001
+                title: November Business Trip
+                status: draft
+                expense_ids:
+                  - exp_001
+                created_by: user_101
+        '422':
+          description: 422 Expense Too Old
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                        message:
+                          type: string
+              example:
+                error: validation_error
+                details:
+                  - field: expense_ids
+                    message: Expense exp_old_001 is older than 90 days and cannot be added to a claim
+      tags:
+        - Claims
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                expense_ids:
+                  type: array
+                  items:
+                    type: string
+            example:
+              title: November Business Trip
+              expense_ids:
+                - '{{expense_id}}'
+  '/claims/{id}':
+    get:
+      summary: Get Claim
+      responses:
+        '200':
+          description: 200 OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: string
+                  expense_ids:
+                    type: array
+                    items:
+                      type: string
+                  created_by:
+                    type: string
+              example:
+                id: clm_001
+                title: November Business Trip
+                status: draft
+                expense_ids:
+                  - exp_001
+                  - exp_002
+                created_by: user_101
+        '404':
+          description: 404 Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+              example:
+                error: not_found
+                message: Claim clm_999 does not exist
+      tags:
+        - Claims
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{claim_id}}'
+  '/claims/{id}/submit':
+    post:
+      summary: Submit Claim
+      responses:
+        '200':
+          description: 200 OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: string
+                  expense_ids:
+                    type: array
+                    items:
+                      type: string
+                  created_by:
+                    type: string
+              example:
+                id: clm_001
+                title: November Business Trip
+                status: submitted
+                expense_ids:
+                  - exp_001
+                  - exp_002
+                created_by: user_101
+        '409':
+          description: 409 Invalid State
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+              example:
+                error: invalid_state_transition
+                message: Claim clm_001 is already submitted and cannot be submitted again
+      tags:
+        - Claims
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{claim_id}}'
+  '/claims/{id}/approve':
+    post:
+      summary: Approve Claim
+      responses:
+        '200':
+          description: 200 OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: string
+                  expense_ids:
+                    type: array
+                    items:
+                      type: string
+                  created_by:
+                    type: string
+                  approved_by:
+                    type: string
+              example:
+                id: clm_001
+                title: November Business Trip
+                status: approved
+                expense_ids:
+                  - exp_001
+                  - exp_002
+                created_by: user_101
+                approved_by: user_202
+        '403':
+          description: 403 Cannot Approve Own Claim
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+              example:
+                error: forbidden
+                message: An approver cannot approve their own claim
+      tags:
+        - Claims
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{claim_id}}'
+  '/claims/{id}/reject':
+    post:
+      summary: Reject Claim
+      responses:
+        '200':
+          description: 200 OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: string
+                  rejection_reason:
+                    type: string
+                  expense_ids:
+                    type: array
+                    items:
+                      type: string
+                  created_by:
+                    type: string
+              example:
+                id: clm_001
+                title: November Business Trip
+                status: rejected
+                rejection_reason: Missing receipts for expenses above threshold
+                expense_ids:
+                  - exp_001
+                  - exp_002
+                created_by: user_101
+        '409':
+          description: 409 Not Submitted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+              example:
+                error: invalid_state_transition
+                message: Only submitted claims can be rejected
+      tags:
+        - Claims
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+            example:
+              reason: Missing receipts for expenses above threshold
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{claim_id}}'
+  '/claims/{id}/reimburse':
+    post:
+      summary: Reimburse Claim
+      responses:
+        '200':
+          description: 200 OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: string
+                  expense_ids:
+                    type: array
+                    items:
+                      type: string
+                  created_by:
+                    type: string
+                  approved_by:
+                    type: string
+                  reimbursed_by:
+                    type: string
+              example:
+                id: clm_001
+                title: November Business Trip
+                status: reimbursed
+                expense_ids:
+                  - exp_001
+                  - exp_002
+                created_by: user_101
+                approved_by: user_202
+                reimbursed_by: user_303
+        '409':
+          description: 409 Not Approved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+              example:
+                error: invalid_state_transition
+                message: Only approved claims can be reimbursed
+      tags:
+        - Claims
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{claim_id}}'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+security:
+  - BearerAuth: []

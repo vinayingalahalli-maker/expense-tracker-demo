@@ -1,0 +1,4 @@
+$kind: collection
+name: Expenses
+description: 'Employee expense records. Amounts must be positive, dates cannot be in the future, and a receipt is required above the category threshold.'
+order: 2000

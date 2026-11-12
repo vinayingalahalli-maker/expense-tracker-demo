@@ -1,0 +1,28 @@
+$kind: http-example
+name: 422 Unprocessable Entity
+request:
+  url: '{{base_url}}/categories'
+  method: POST
+  body:
+    type: json
+    content: |-
+      {
+        "name": "",
+        "receipt_threshold": -10
+      }
+response:
+  statusCode: 422
+  statusText: Unprocessable Entity
+  headers:
+    - key: Content-Type
+      value: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "error": "validation_error",
+        "details": [
+          {"field": "name", "message": "name is required"},
+          {"field": "receipt_threshold", "message": "receipt_threshold must be a positive number"}
+        ]
+      }

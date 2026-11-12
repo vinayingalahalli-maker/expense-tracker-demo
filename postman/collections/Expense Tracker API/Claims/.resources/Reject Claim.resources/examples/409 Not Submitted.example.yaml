@@ -1,0 +1,24 @@
+$kind: http-example
+name: 409 Not Submitted
+request:
+  url: '{{base_url}}/claims/clm_001/reject'
+  method: POST
+  body:
+    type: json
+    content: |-
+      {
+        "reason": "Missing receipts"
+      }
+response:
+  statusCode: 409
+  statusText: Conflict
+  headers:
+    - key: Content-Type
+      value: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "error": "invalid_state_transition",
+        "message": "Only submitted claims can be rejected"
+      }

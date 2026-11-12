@@ -1,0 +1,193 @@
+{
+  "sdkGenVersion": "3.23.0",
+  "resolvedGeneratorVersion": "3.23.0",
+  "config": {
+    "schemaVersion": "sdk-config-ir/v1",
+    "source": {
+      "specs": [
+        {
+          "specType": "postman"
+        }
+      ]
+    },
+    "target": {
+      "language": "typescript",
+      "sourceOrigin": "postman",
+      "sdkName": "expense-tracker-api-sdk",
+      "sdkVersion": "1.0.0"
+    },
+    "api": {
+      "baseUrl": "",
+      "environments": [],
+      "environmentVariables": []
+    },
+    "client": {
+      "retry": {
+        "enabled": true,
+        "maxAttempts": 3,
+        "retryDelayMs": 150,
+        "maxDelayMs": 5000,
+        "jitterMs": 50,
+        "backoffFactor": 2,
+        "methods": [
+          "GET",
+          "PUT",
+          "DELETE",
+          "HEAD",
+          "OPTIONS"
+        ],
+        "maxRetryAfterDelayMs": 60000
+      },
+      "responseHeaders": false,
+      "multiTenant": false,
+      "additionalConstructorParameters": []
+    },
+    "package": {},
+    "output": {
+      "delivery": "zip",
+      "credentialResolution": "refs-only"
+    },
+    "docs": {},
+    "generation": {
+      "includeWatermark": false,
+      "ai": false,
+      "buildAllModels": false,
+      "inferServiceNames": false,
+      "includeDeprecatedOperations": true,
+      "multipleResponses": false,
+      "generateFullProject": false,
+      "devContainer": false,
+      "allowMockClient": false,
+      "serialization": {
+        "enumRepresentation": "union"
+      },
+      "language": {
+        "typescript": {
+          "httpClient": {
+            "name": "fetch"
+          },
+          "bundle": true,
+          "exportClassDefault": false
+        }
+      }
+    }
+  },
+  "files": [
+    "package.json",
+    "tsconfig.json",
+    "examples/tsconfig.json",
+    ".gitignore",
+    "scripts/prepublish.sh",
+    ".github/workflows/release.yml",
+    ".env.example",
+    "examples/package.json",
+    "examples/README.md",
+    "examples/src/index.ts",
+    "src/http/client.ts",
+    "src/http/types.ts",
+    "src/http/error.ts",
+    "src/http/handlers/terminating-handler.ts",
+    "src/http/handlers/response-validation-handler.ts",
+    "src/http/handlers/request-validation-handler.ts",
+    "src/http/transport/request.ts",
+    "src/http/transport/request-builder.ts",
+    "src/http/transport/request-fetch-adapter.ts",
+    "src/http/transport/transport-hook-adapter.ts",
+    "src/http/errors/throwable-error.ts",
+    "src/http/handlers/retry-handler.ts",
+    "src/services/expense-tracker-api-sdk/models/create-category-request.ts",
+    "src/services/expense-tracker-api-sdk/models/create-expense-request.ts",
+    "src/services/expense-tracker-api-sdk/models/update-expense-request.ts",
+    "src/services/expense-tracker-api-sdk/models/create-claim-request.ts",
+    "src/services/expense-tracker-api-sdk/models/reject-claim-request.ts",
+    "documentation/models/CreateCategoryRequest.md",
+    "documentation/models/CreateExpenseRequest.md",
+    "documentation/models/UpdateExpenseRequest.md",
+    "documentation/models/CreateClaimRequest.md",
+    "documentation/models/RejectClaimRequest.md",
+    "src/services/base-service.ts",
+    "src/services/expense-tracker-api-sdk/expense-tracker-api-sdk-service.ts",
+    "src/index.ts",
+    "src/services/expense-tracker-api-sdk/models/index.ts",
+    "src/services/expense-tracker-api-sdk/index.ts",
+    "src/http/index.ts",
+    "src/http/handlers/handler-chain.ts",
+    "documentation/snippets/snippets.json",
+    "src/http/handlers/hook-handler.ts",
+    "src/http/hooks/custom-hook.ts",
+    "src/http/hooks/hook.ts",
+    "src/http/environment.ts",
+    "src/http/serialization/base-serializer.ts",
+    "src/http/serialization/query-serializer.ts",
+    "src/http/serialization/path-serializer.ts",
+    "src/http/serialization/header-serializer.ts",
+    "src/http/serialization/cookie-serializer.ts",
+    "src/http/transport/types.ts",
+    "src/http/utils/runtime.ts",
+    "src/http/utils/line-decoder.ts",
+    "src/http/utils/response-matcher.ts",
+    "src/http/utils/content-type.ts",
+    "src/http/errors/validation-error.ts",
+    "README.md",
+    "documentation/services/ExpenseTrackerApiSdkService.md"
+  ],
+  "fileHashes": {
+    ".env.example": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".github/workflows/release.yml": "97b1ef13d02af6b39c9b8209f007b6778e64c42efd6b74827588988e5e7bf877",
+    ".gitignore": "5f515684cbf8243009414e638b28e93a70a884b81e3e16c38bb01124419e44b2",
+    "README.md": "60dcb340c95eb42715071fac228589088acac70bb49ed05d6fcb00a9571bf930",
+    "documentation/models/CreateCategoryRequest.md": "10e8c3031b49a4fa59a70249b3ff35cb06ee0a472ec9b6bd2465c4cd30d31e81",
+    "documentation/models/CreateClaimRequest.md": "22cce81f1353fbe79076f560d4c81e923826a5c415d06890b84481bbb6d643f6",
+    "documentation/models/CreateExpenseRequest.md": "62b0cb1cc8aa53806759ff25455625ff057b7bf7c4dd8b95c790fc2583a21528",
+    "documentation/models/RejectClaimRequest.md": "d0a37cf71df524e67b16d4e2a271f6a1e2337586e7b0b9f2780000739b9f0d40",
+    "documentation/models/UpdateExpenseRequest.md": "9c41c5f4ecc6929b1f5b0479a60b4ebb44e02c44469ba5d3f939d7be5481a2e0",
+    "documentation/services/ExpenseTrackerApiSdkService.md": "ac278d1178b99ab1a1d76ef40ebc5bfb4c936c5ad63d5d5ab6b640cefb784f08",
+    "documentation/snippets/snippets.json": "dd4e750451f7607b3f8b996ab8997cd5765d4e81d73b94128661c3be30a4a965",
+    "examples/README.md": "5dfbbfa6c5ef95be7a71b4041ae4f81844b33e62ec7cad3e975805f4cc7e55ea",
+    "examples/package.json": "e7abd0e93e15f3554e2f6dfcfe17f94ec1535433c9564a1356e8fb82e10b076d",
+    "examples/src/index.ts": "43bc67ada990bbd6d95911671cb5b24be2f57d22c63b5e4d1c1e833979f71d69",
+    "examples/tsconfig.json": "bdb522404dc9d1f590917157ea54e49bb6bfa301ef470c190b8b2c7119ed69c4",
+    "package.json": "8aca8f38290b66f7ff6b0df9356c60bb817590d279a9321b6ab00fa9c1b4028b",
+    "scripts/prepublish.sh": "651cd87546cc25d69210f55dc4310d47007c53b719da1da8b3bd9acb098defcf",
+    "src/http/client.ts": "349c2725fbbeac67a4479fe1be2b8c0c3788ac8368ef722e3d1fdcd686f68717",
+    "src/http/environment.ts": "aa31eab9675643085441be05412f1fd2cc22a602cb2dcc516a5b2258c05ca17f",
+    "src/http/error.ts": "095eb2f095a7868a5a1fcb4cf543560e143c06766c9693f9efb67b0601c242a5",
+    "src/http/errors/throwable-error.ts": "c23b141df9759e22cef65788738e3035a25b8d956ee5f873eddaf528a835ba6c",
+    "src/http/errors/validation-error.ts": "8835718fafeca5327ada4e6cbb7859f40d7460b98973812f2a012017bde8e2c8",
+    "src/http/handlers/handler-chain.ts": "7963ae4f81949a07b9265abd5c9aeef8f7b6d99260874f9e8d6f82a916d85699",
+    "src/http/handlers/hook-handler.ts": "1b81c92bbde0cc41d31a1f1bd9e708a7806135b30755b794204324cb485f026f",
+    "src/http/handlers/request-validation-handler.ts": "2ca7c33bfbee8cef6fac689995223822e7c94bd923f195d8eed9e3d30196b0c9",
+    "src/http/handlers/response-validation-handler.ts": "e54d5c4a77952887bd2be918b4077e4ebc0183ed33fbdfb8fc26c539ea4ca703",
+    "src/http/handlers/retry-handler.ts": "da5a8bafd513e750582935534e26100ca6d43cc25f8925e8f207240e114fa360",
+    "src/http/handlers/terminating-handler.ts": "8b820d772559c271507977bd3bc59b0afd979f5fc24397419dcb97059a3b076c",
+    "src/http/hooks/custom-hook.ts": "906e418d5f24ae314500dea157f0b101a179ff3c16ef8dbb158cce51ed306ee7",
+    "src/http/hooks/hook.ts": "6548e301970d9e7927540b554548d22a9bd5fd47c2bfd7136e9efcc186f8ffff",
+    "src/http/index.ts": "b8a007df51c54f0c9d55051963083dd347816921a6ec7d88f09c35d70fb9919c",
+    "src/http/serialization/base-serializer.ts": "91fb56323ba2f45af568ee4a02f7657bb7aac29112db52aa3ca71080d8837dce",
+    "src/http/serialization/cookie-serializer.ts": "f9681a88bf37e973be4b563a052dc48cb7d2c4ae8b90165ea9e9031d024400b3",
+    "src/http/serialization/header-serializer.ts": "b4c97918a23ee9c2d19996de23433e5d656f68eb5c44b77e454066d64bdd4293",
+    "src/http/serialization/path-serializer.ts": "e6f269f8d87aa3e3119e300899b118a7b03a3fe22c738b19a8ecfca2e750c91d",
+    "src/http/serialization/query-serializer.ts": "bc2484850e2a047ca4c5112b6782f44b73019c7e3bd6825500aa5f080383b62a",
+    "src/http/transport/request-builder.ts": "5848eeb743885c8394897922db01c6945b156ce93b12fa6dcdb06bab5df56919",
+    "src/http/transport/request-fetch-adapter.ts": "4f93b414d86e3f7ad0f5ac15eee1365134a473bc5d50f0f80e7ec30acd8c3edb",
+    "src/http/transport/request.ts": "1a18d73c0fea7ea6de777849c6084e7908c9a53c3dde36517f96a86d2a683543",
+    "src/http/transport/transport-hook-adapter.ts": "0c706d8da3456825dbdedbe8ffb24350f0dfa4f9aaf4cf13c3bbcf37e5ff54ed",
+    "src/http/transport/types.ts": "4e37393ff786526d6d6992822e30b9666a0e4f422ff080f51b7b62ef5cc1f304",
+    "src/http/types.ts": "a236075fb8f4c0476c3813876776e82fc7f53a82e3d1b7b7bb12c62681ff5f06",
+    "src/http/utils/content-type.ts": "760c551874f4c5ee963f90f157431567619502ff8bc0f7f86131a973000d2031",
+    "src/http/utils/line-decoder.ts": "c01e7f169a4632664f3cf51acba5ac87e792aa227a760ebc89b0df2e35b28910",
+    "src/http/utils/response-matcher.ts": "7870d29287e4f887348a25bf7bb2c0c6cce076baa6442c1787278bc883dd5a4c",
+    "src/http/utils/runtime.ts": "5dfe246c6eeca09e4e0e243951a86fe0741bb49e399b344515e9876ff92d4021",
+    "src/index.ts": "136bc449a0a2e8509203b985a59623f876ba537de6f24c9efd0fb04bddb9420b",
+    "src/services/base-service.ts": "48f652f352d3bf34feec99d69b4a6f07f1157e1708ec249b98b86e04377f9fb8",
+    "src/services/expense-tracker-api-sdk/expense-tracker-api-sdk-service.ts": "e90af7e33d194b325892fc1bc163275a2926247896d57eaca55acd70387c53b3",
+    "src/services/expense-tracker-api-sdk/index.ts": "87beb45cbf290acaa756785f38a32d8ce61b02efec86dc3f90ede82da67fb86b",
+    "src/services/expense-tracker-api-sdk/models/create-category-request.ts": "5c48765f9336c9959262f057aa66998faa8bbd9b8795c785424339d1c36da365",
+    "src/services/expense-tracker-api-sdk/models/create-claim-request.ts": "ad7d738f5c8cffbd5aa85cf096149e8fe1234c8db51ef352a5b73a918040e96f",
+    "src/services/expense-tracker-api-sdk/models/create-expense-request.ts": "b6b37f7d392a02bcf8fc4832ce623b0e72d888b9ede2e9d95c721ca311d8426a",
+    "src/services/expense-tracker-api-sdk/models/index.ts": "153bd1a10a7ae4ac03f2723c9f02f2192a4266a45199ceb4b7e06ab786e590be",
+    "src/services/expense-tracker-api-sdk/models/reject-claim-request.ts": "47af310efac0481748cd7359f9a93b5ce26111d3f1dc6a3850e26576cdd9b541",
+    "src/services/expense-tracker-api-sdk/models/update-expense-request.ts": "8f30b353fccff7a98143f42b6d78bde5cdb905446e02b2fdb5f9b4da7bd74c45",
+    "tsconfig.json": "bdb522404dc9d1f590917157ea54e49bb6bfa301ef470c190b8b2c7119ed69c4"
+  }
+}

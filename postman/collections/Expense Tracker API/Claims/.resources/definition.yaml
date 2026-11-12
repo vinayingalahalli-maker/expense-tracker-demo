@@ -1,0 +1,4 @@
+$kind: collection
+name: Claims
+description: 'Expense claims. State machine: draft → submitted → approved | rejected → reimbursed. An approver cannot approve their own claim.'
+order: 3000

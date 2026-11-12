@@ -1,0 +1,23 @@
+$kind: http-request
+name: Create Category
+method: POST
+url: '{{base_url}}/categories'
+order: 2000
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Travel",
+      "description": "Flights, hotels, and ground transport",
+      "receipt_threshold": 50.00
+    }
+examples: './.resources/Create Category.resources/examples'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 201", () => pm.response.to.have.status(201));
+      pm.test("Response has an id", () => pm.expect(pm.response.json()).to.have.property("id"));
+      pm.test("Response time is under 2000ms", () => pm.expect(pm.response.responseTime).to.be.below(2000));
