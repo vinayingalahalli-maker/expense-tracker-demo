@@ -1,0 +1,28 @@
+$kind: http-example
+name: 200 OK
+request:
+  url: '{{base_url}}/categories/cat_001'
+  method: PUT
+  body:
+    type: json
+    content: |-
+      {
+        "name": "Travel",
+        "description": "Flights, hotels, ground transport and car hire",
+        "receipt_threshold": 75.00
+      }
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    - key: Content-Type
+      value: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "id": "cat_001",
+        "name": "Travel",
+        "description": "Flights, hotels, ground transport and car hire",
+        "receipt_threshold": 75.00
+      }

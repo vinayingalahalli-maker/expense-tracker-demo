@@ -1,0 +1,9 @@
+# CreateCategoryRequest
+
+**Properties**
+
+| Name             | Type   | Required | Description |
+| :--------------- | :----- | :------- | :---------- |
+| name             | string | ❌       |             |
+| description      | string | ❌       |             |
+| receiptThreshold | number | ❌       |             |

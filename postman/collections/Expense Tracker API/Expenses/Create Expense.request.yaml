@@ -1,0 +1,26 @@
+$kind: http-request
+name: Create Expense
+method: POST
+url: '{{base_url}}/expenses'
+order: 2000
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "category_id": "{{category_id}}",
+      "amount": 42.50,
+      "currency": "USD",
+      "date": "2026-11-10",
+      "description": "Taxi to client site",
+      "receipt_url": null
+    }
+examples: './.resources/Create Expense.resources/examples'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 201", () => pm.response.to.have.status(201));
+      pm.test("Response has an id", () => pm.expect(pm.response.json()).to.have.property("id"));
+      pm.test("Response time is under 2000ms", () => pm.expect(pm.response.responseTime).to.be.below(2000));

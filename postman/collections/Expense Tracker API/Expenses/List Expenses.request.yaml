@@ -1,0 +1,13 @@
+$kind: http-request
+name: List Expenses
+method: GET
+url: '{{base_url}}/expenses'
+order: 1000
+examples: './.resources/List Expenses.resources/examples'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 200", () => pm.response.to.have.status(200));
+      pm.test("Response is an array", () => pm.expect(pm.response.json()).to.be.an("array"));
+      pm.test("Response time is under 2000ms", () => pm.expect(pm.response.responseTime).to.be.below(2000));

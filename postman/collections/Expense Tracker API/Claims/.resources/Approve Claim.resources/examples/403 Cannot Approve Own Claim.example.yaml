@@ -1,0 +1,18 @@
+$kind: http-example
+name: 403 Cannot Approve Own Claim
+request:
+  url: '{{base_url}}/claims/clm_001/approve'
+  method: POST
+response:
+  statusCode: 403
+  statusText: Forbidden
+  headers:
+    - key: Content-Type
+      value: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "error": "forbidden",
+        "message": "An approver cannot approve their own claim"
+      }

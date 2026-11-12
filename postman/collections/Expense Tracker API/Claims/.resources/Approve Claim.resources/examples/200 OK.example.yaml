@@ -1,0 +1,22 @@
+$kind: http-example
+name: 200 OK
+request:
+  url: '{{base_url}}/claims/clm_001/approve'
+  method: POST
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    - key: Content-Type
+      value: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "id": "clm_001",
+        "title": "November Business Trip",
+        "status": "approved",
+        "expense_ids": ["exp_001", "exp_002"],
+        "created_by": "user_101",
+        "approved_by": "user_202"
+      }

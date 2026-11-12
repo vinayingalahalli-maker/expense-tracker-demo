@@ -1,0 +1,16 @@
+$kind: http-request
+name: Reimburse Claim
+method: POST
+url: '{{base_url}}/claims/:id/reimburse'
+order: 7000
+pathVariables:
+  - key: id
+    value: '{{claim_id}}'
+examples: './.resources/Reimburse Claim.resources/examples'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 200", () => pm.response.to.have.status(200));
+      pm.test("Response has a status field", () => pm.expect(pm.response.json()).to.have.property("status"));
+      pm.test("Response time is under 2000ms", () => pm.expect(pm.response.responseTime).to.be.below(2000));

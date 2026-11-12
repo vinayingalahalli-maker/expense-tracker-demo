@@ -1,0 +1,28 @@
+$kind: http-example
+name: 201 Created
+request:
+  url: '{{base_url}}/claims'
+  method: POST
+  body:
+    type: json
+    content: |-
+      {
+        "title": "November Business Trip",
+        "expense_ids": ["exp_001"]
+      }
+response:
+  statusCode: 201
+  statusText: Created
+  headers:
+    - key: Content-Type
+      value: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "id": "clm_001",
+        "title": "November Business Trip",
+        "status": "draft",
+        "expense_ids": ["exp_001"],
+        "created_by": "user_101"
+      }

@@ -1,0 +1,28 @@
+$kind: http-request
+name: Update Expense
+method: PUT
+url: '{{base_url}}/expenses/:id'
+order: 4000
+pathVariables:
+  - key: id
+    value: '{{expense_id}}'
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "amount": 55.00,
+      "currency": "USD",
+      "date": "2026-11-10",
+      "description": "Taxi to client site (updated fare)",
+      "receipt_url": "https://receipts.example.com/r/abc123"
+    }
+examples: './.resources/Update Expense.resources/examples'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 200", () => pm.response.to.have.status(200));
+      pm.test("Response has an id", () => pm.expect(pm.response.json()).to.have.property("id"));
+      pm.test("Response time is under 2000ms", () => pm.expect(pm.response.responseTime).to.be.below(2000));

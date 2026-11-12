@@ -1,0 +1,13 @@
+name: Expense Tracker Local Environment
+values:
+  - key: base_url
+    value: 'http://localhost:8000'
+  - key: token
+    value: ''
+  - key: expense_id
+    value: ''
+  - key: category_id
+    value: ''
+  - key: claim_id
+    value: ''
+color: 240

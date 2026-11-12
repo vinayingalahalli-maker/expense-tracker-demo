@@ -1,0 +1,28 @@
+$kind: http-example
+name: 200 OK
+request:
+  url: '{{base_url}}/claims/clm_001/reject'
+  method: POST
+  body:
+    type: json
+    content: |-
+      {
+        "reason": "Missing receipts for expenses above threshold"
+      }
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    - key: Content-Type
+      value: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "id": "clm_001",
+        "title": "November Business Trip",
+        "status": "rejected",
+        "rejection_reason": "Missing receipts for expenses above threshold",
+        "expense_ids": ["exp_001", "exp_002"],
+        "created_by": "user_101"
+      }

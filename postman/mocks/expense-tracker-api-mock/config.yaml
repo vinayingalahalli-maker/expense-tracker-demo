@@ -1,0 +1,21 @@
+id: 01a1cf6e-4a91-757f-b03c-657c4a2ec09e
+version: 1
+name: Expense Tracker API Mock
+slug: expense-tracker-api
+enableSession: true
+protocol: http
+port: 9000
+autoRestartOnChange: true
+logging:
+  level: verbose
+  showBody: true
+associations:
+  - entityType: collection
+    entityId: C7F02dE9fc4E889b73C05C8e
+    relation: source
+    syncEnabled: true
+scenarios:
+  - name: default
+    path: ./default.js
+    default: true
+    id: 01a1cf78-9de8-7679-a65b-95a62c80e1b3

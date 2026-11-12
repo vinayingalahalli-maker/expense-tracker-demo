@@ -1,0 +1,18 @@
+$kind: http-example
+name: 409 Expense In Claim
+request:
+  url: '{{base_url}}/expenses/exp_001'
+  method: DELETE
+response:
+  statusCode: 409
+  statusText: Conflict
+  headers:
+    - key: Content-Type
+      value: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "error": "conflict",
+        "message": "Expense exp_001 is part of a submitted claim and cannot be deleted"
+      }
